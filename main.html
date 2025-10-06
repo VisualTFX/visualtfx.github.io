@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxuryLoot | Email Gen</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base styles matching the design document */
+        body {
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            cursor: none; /* Hide the default cursor */
+            overflow-x: hidden;
+        }
+
+        /* Ensure default cursor is hidden on all interactive elements */
+        a, button {
+            cursor: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #8b5cf6;
+            border-radius: 10px;
+            border: 2px solid #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #a78bfa;
+        }
+
+        /* Custom Cursor Styles */
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #8b5cf6;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #8b5cf6;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease, backdrop-filter 0.3s ease, background-color 0.3s ease;
+        }
+        
+        /* Cursor Hover States */
+        .cursor-interactive .cursor-dot {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+        .cursor-interactive .cursor-outline {
+            width: 12px;
+            height: 12px;
+            background-color: #a78bfa;
+            border-color: transparent;
+            opacity: 1;
+        }
+
+        .cursor-image-hover .cursor-dot {
+            opacity: 0;
+        }
+        .cursor-image-hover .cursor-outline {
+             width: 80px;
+             height: 80px;
+             opacity: 0.8;
+             border: 2px solid #e5e5e5;
+             background-color: rgba(229, 229, 229, 0.1);
+             backdrop-filter: blur(4px);
+        }
+
+        /* Hero radial gradient */
+        .hero-gradient {
+            background-image: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.15) 0%, rgba(10, 10, 10, 0) 60%);
+        }
+
+        /* Glassmorphism card effect */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Scroll-triggered animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* New link hover animation for nav items */
+        nav ul li a {
+            position: relative;
+            padding-bottom: 4px; /* Space for the line */
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 1px;
+            background-color: #a78bfa;
+            transition: width 0.3s ease-in-out;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="w-full min-h-screen overflow-y-auto overflow-x-hidden">
+        
+        <!-- Header -->
+        <header class="fixed top-0 left-0 right-0 z-50 reveal">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="text-xl md:text-2xl font-bold tracking-tighter text-white">
+                    LuxuryLoot <span class="text-violet-500">| Email Gen</span>
+                </div>
+                <ul class="flex items-center space-x-8">
+                    <li><a href="#features" class="hover:text-violet-400 transition-colors duration-300">Features</a></li>
+                    <li><a href="#tech" class="hover:text-violet-400 transition-colors duration-300">Technology</a></li>
+                    <li><a href="#" class="bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-5 rounded-lg transition-colors duration-300">Get Started</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="min-h-screen flex items-center justify-center text-center hero-gradient px-4">
+                <div class="space-y-6 max-w-4xl mx-auto">
+                    <h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase reveal">
+                        Email Automation <br/> <span class="text-violet-500">Redefined</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto reveal" style="transition-delay: 200ms;">
+                        Introducing LuxuryLoot | Email Gen, a powerful framework that bridges your Gmail inbox with your Discord server. Get instant, secure, and customizable email notifications where your community lives.
+                    </p>
+                    <div class="pt-6 reveal" style="transition-delay: 400ms;">
+                        <a href="#features" class="bg-violet-600 hover:bg-violet-500 text-white font-bold text-lg py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-block">
+                            Discover the Power
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="py-20 md:py-32 container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tighter reveal">Engineered for Efficiency</h2>
+                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">
+                        Every feature is meticulously crafted for a seamless and powerful user experience.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="glass-card p-8 rounded-2xl reveal">
+                        <div class="text-violet-400 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Real-Time Alerts</h3>
+                        <p class="text-gray-400">
+                            Never miss a critical email. NexusBot checks your inbox and pushes notifications to your designated Discord channel instantly.
+                        </p>
+                    </div>
+                    <!-- Feature Card 2 -->
+                    <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 200ms;">
+                        <div class="text-violet-400 mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Secure OAuth 2.0</h3>
+                        <p class="text-gray-400">
+                            Built with Google's secure authentication framework. Your credentials are safe, and access is managed via revocable tokens.
+                        </p>
+                    </div>
+                    <!-- Feature Card 3 -->
+                    <div class="glass-card p-8 rounded-2xl reveal" style="transition-delay: 400ms;">
+                         <div class="text-violet-400 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Alias Management</h3>
+                        <p class="text-gray-400">
+                            Dynamically create and manage unique email aliases directly from Discord, perfect for service sign-ups and organization.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tech Showcase Section -->
+            <section id="tech" class="py-20 md:py-32">
+                <div class="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter reveal">The Core Logic</h2>
+                        <p class="text-lg text-gray-400 mt-4 max-w-xl reveal" style="transition-delay: 150ms;">
+                            LuxuryLoot is built on a robust Python foundation, leveraging the power of Discord.py and the official Google API Client Library. This ensures reliability, scalability, and access to the full suite of Gmail's capabilities.
+                        </p>
+                         <div class="mt-8 space-x-4 reveal" style="transition-delay: 300ms;">
+                            <span class="inline-block bg-gray-800 text-violet-300 text-sm font-semibold px-4 py-2 rounded-full">Python</span>
+                            <span class="inline-block bg-gray-800 text-violet-300 text-sm font-semibold px-4 py-2 rounded-full">Discord.py</span>
+                            <span class="inline-block bg-gray-800 text-violet-300 text-sm font-semibold px-4 py-2 rounded-full">Google API</span>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 w-full reveal" style="transition-delay: 250ms;">
+                        <div class="bg-gray-900/50 border border-gray-700 rounded-2xl p-4 shadow-2xl shadow-violet-900/10">
+                            <div class="flex space-x-2 border-b border-gray-700 pb-2 mb-4">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <pre><code class="language-python text-sm overflow-x-auto block">
+  @tasks.loop(seconds=15)
+  async def check_inbox():
+      global gmail_service
+      if not gmail_service:
+          return
+
+      try:
+          results = gmail_service.users().messages().list(
+              userId='me', 
+              labelIds=['INBOX', 'UNREAD']
+          ).execute()
+          
+          messages = results.get('messages', [])
+          if not messages:
+              return
+
+          # ... Process messages and send to Discord ...
+          
+      except HttpError as error:
+          print(f"API ERROR: check_inbox - {error}")
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        
+        <!-- Footer -->
+        <footer class="py-12 border-t border-gray-800 mt-20">
+            <div class="container mx-auto px-6 text-center text-gray-500">
+                <p>&copy; 2025 LuxuryLoot. All rights reserved. A masterclass in controlled, atmospheric design.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Custom Cursor Logic ---
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            
+            let dotX = 0, dotY = 0;
+            let outlineX = 0, outlineY = 0;
+            
+            const interactiveElements = document.querySelectorAll('a, button');
+            const imageElements = document.querySelectorAll('img');
+
+            window.addEventListener('mousemove', e => {
+                dotX = e.clientX;
+                dotY = e.clientY;
+                cursorDot.style.left = `${dotX}px`;
+                cursorDot.style.top = `${dotY}px`;
+            });
+
+            const animateOutline = () => {
+                const ease = 0.15;
+                const dx = dotX - outlineX;
+                const dy = dotY - outlineY;
+
+                outlineX += dx * ease;
+                outlineY += dy * ease;
+                
+                cursorOutline.style.left = `${outlineX}px`;
+                cursorOutline.style.top = `${outlineY}px`;
+                
+                requestAnimationFrame(animateOutline);
+            }
+            animateOutline();
+
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-interactive'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-interactive'));
+            });
+
+            imageElements.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-image-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-image-hover'));
+            });
+
+
+            // --- Scroll-Triggered Animation Logic ---
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: unobserve after revealing to prevent re-animation
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
