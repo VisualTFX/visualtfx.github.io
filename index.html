@@ -23,6 +23,16 @@
             overflow-x: hidden;
         }
 
+        /* On touch devices, revert to the default cursor behavior */
+        @media (pointer: coarse) {
+            body, a, button {
+                cursor: auto;
+            }
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+        }
+
         /* Ensure default cursor is hidden on all interactive elements */
         a, button {
             cursor: none;
@@ -130,13 +140,13 @@
             transform: translateY(0);
         }
 
-        /* New link hover animation for nav items */
-        nav ul li a {
+        /* Nav link hover animation */
+        nav ul li a:not(.bg-violet-600) {
             position: relative;
             padding-bottom: 4px; /* Space for the line */
         }
 
-        nav ul li a::after {
+        nav ul li a:not(.bg-violet-600)::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -148,8 +158,13 @@
             transition: width 0.3s ease-in-out;
         }
 
-        nav ul li a:hover::after {
+        nav ul li a:hover:not(.bg-violet-600)::after {
             width: 100%;
+        }
+
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -162,24 +177,39 @@
     <div class="w-full min-h-screen overflow-y-auto overflow-x-hidden">
         
         <!-- Header -->
-        <header class="fixed top-0 left-0 right-0 z-50 reveal">
-            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <header class="fixed top-0 left-0 right-0 z-50">
+             <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="text-xl md:text-2xl font-bold tracking-tighter text-white">
                     LuxuryLoot <span class="text-violet-500">| Email Gen</span>
                 </div>
-                <ul class="flex items-center space-x-8">
+                <!-- Desktop Nav -->
+                <ul class="hidden lg:flex items-center space-x-8">
                     <li><a href="#features" class="hover:text-violet-400 transition-colors duration-300">Features</a></li>
                     <li><a href="#tech" class="hover:text-violet-400 transition-colors duration-300">Technology</a></li>
                     <li><a href="#" class="bg-violet-600 hover:bg-violet-500 text-white font-bold py-2 px-5 rounded-lg transition-colors duration-300">Get Started</a></li>
                 </ul>
+                <!-- Mobile Nav Button -->
+                <div class="lg:hidden">
+                    <button id="menu-btn" class="z-50 block text-white focus:outline-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
             </nav>
         </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-40 flex-col items-center justify-center space-y-8 text-2xl font-bold opacity-0 -translate-y-4">
+            <a href="#features" class="mobile-link text-white hover:text-violet-400">Features</a>
+            <a href="#tech" class="mobile-link text-white hover:text-violet-400">Technology</a>
+            <a href="#" class="mobile-link bg-violet-600 hover:bg-violet-500 text-white py-3 px-8 rounded-lg transition-colors duration-300">Get Started</a>
+        </div>
+
 
         <main>
             <!-- Hero Section -->
             <section class="min-h-screen flex items-center justify-center text-center hero-gradient px-4">
                 <div class="space-y-6 max-w-4xl mx-auto">
-                    <h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase reveal">
+                    <h1 class="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter uppercase reveal">
                         Email Automation <br/> <span class="text-violet-500">Redefined</span>
                     </h1>
                     <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto reveal" style="transition-delay: 200ms;">
@@ -194,7 +224,7 @@
             </section>
 
             <!-- Features Section -->
-            <section id="features" class="py-20 md:py-32 container mx-auto px-6">
+            <section id="features" class="py-24 lg:py-32 container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl md:text-6xl font-black tracking-tighter reveal">Engineered for Efficiency</h2>
                     <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 150ms;">
@@ -237,7 +267,7 @@
             </section>
             
             <!-- Tech Showcase Section -->
-            <section id="tech" class="py-20 md:py-32">
+            <section id="tech" class="py-24 lg:py-32">
                 <div class="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-12">
                     <div class="lg:w-1/2">
                         <h2 class="text-4xl md:text-6xl font-black tracking-tighter reveal">The Core Logic</h2>
@@ -299,45 +329,76 @@
         document.addEventListener('DOMContentLoaded', () => {
 
             // --- Custom Cursor Logic ---
-            const cursorDot = document.querySelector('.cursor-dot');
-            const cursorOutline = document.querySelector('.cursor-outline');
-            
-            let dotX = 0, dotY = 0;
-            let outlineX = 0, outlineY = 0;
-            
-            const interactiveElements = document.querySelectorAll('a, button');
-            const imageElements = document.querySelectorAll('img');
-
-            window.addEventListener('mousemove', e => {
-                dotX = e.clientX;
-                dotY = e.clientY;
-                cursorDot.style.left = `${dotX}px`;
-                cursorDot.style.top = `${dotY}px`;
-            });
-
-            const animateOutline = () => {
-                const ease = 0.15;
-                const dx = dotX - outlineX;
-                const dy = dotY - outlineY;
-
-                outlineX += dx * ease;
-                outlineY += dy * ease;
+            if (window.matchMedia("(pointer: fine)").matches) {
+                const cursorDot = document.querySelector('.cursor-dot');
+                const cursorOutline = document.querySelector('.cursor-outline');
                 
-                cursorOutline.style.left = `${outlineX}px`;
-                cursorOutline.style.top = `${outlineY}px`;
+                let dotX = 0, dotY = 0;
+                let outlineX = 0, outlineY = 0;
                 
-                requestAnimationFrame(animateOutline);
+                const interactiveElements = document.querySelectorAll('a, button');
+                const imageElements = document.querySelectorAll('img');
+
+                window.addEventListener('mousemove', e => {
+                    dotX = e.clientX;
+                    dotY = e.clientY;
+                    cursorDot.style.left = `${dotX}px`;
+                    cursorDot.style.top = `${dotY}px`;
+                });
+
+                const animateOutline = () => {
+                    const ease = 0.15;
+                    const dx = dotX - outlineX;
+                    const dy = dotY - outlineY;
+
+                    outlineX += dx * ease;
+                    outlineY += dy * ease;
+                    
+                    cursorOutline.style.left = `${outlineX}px`;
+                    cursorOutline.style.top = `${outlineY}px`;
+                    
+                    requestAnimationFrame(animateOutline);
+                }
+                animateOutline();
+
+                interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-interactive'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-interactive'));
+                });
+
+                 imageElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-image-hover'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-image-hover'));
+                });
             }
-            animateOutline();
 
-            interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-interactive'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-interactive'));
-            });
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            
+            const toggleMenu = () => {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    setTimeout(() => {
+                         mobileMenu.classList.remove('opacity-0', '-translate-y-4');
+                    }, 10);
+                } else {
+                    mobileMenu.classList.add('opacity-0', '-translate-y-4');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+                // Toggle icon
+                menuBtn.innerHTML = isHidden ? 
+                    `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>` : 
+                    `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>`;
+            };
 
-            imageElements.forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-image-hover'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-image-hover'));
+            menuBtn.addEventListener('click', toggleMenu);
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
             });
 
 
@@ -348,12 +409,12 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Optional: unobserve after revealing to prevent re-animation
-                        // observer.unobserve(entry.target);
+                    } else {
+                        entry.target.classList.remove('visible');
                     }
                 });
             }, {
-                threshold: 0.1 // Trigger when 10% of the element is visible
+                threshold: 0.1 
             });
 
             revealElements.forEach(el => {
@@ -364,8 +425,5 @@
 
 </body>
 </html>
-
-
-
 
 
